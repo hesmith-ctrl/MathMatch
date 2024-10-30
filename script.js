@@ -1,7 +1,6 @@
 let player1Equation, player2Equation;
 let player1Drawn, player2Drawn;
 let player1Name, player2Name;
-let round = 1;
 
 function startGame() {
     player1Name = document.getElementById("player1Name").value || "Player 1";
@@ -13,7 +12,6 @@ function startGame() {
     document.getElementById("nameEntry").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
 
-    // Generate initial equations for each player
     player1Equation = generateEquation();
     player2Equation = generateEquation();
 
@@ -55,16 +53,13 @@ function applyOperation(player) {
     const drawnNumber = player === "player1" ? player1Drawn : player2Drawn;
     const equation = player === "player1" ? player1Equation : player2Equation;
 
-    // Apply operation to both sides of the equation
     equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
     equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
 
-    // Simplify the equation after operation
     equation.left = simplifyEquationSide(equation.left);
     equation.right = simplifyEquationSide(equation.right);
 
-    // Change Apply Operation button color to green to show it's been applied
-    document.getElementById(player + "ApplyBtn").style.backgroundColor = "green";
+    document.getElementById(player + "ApplyBtn").classList.add("applied");
 
     displayEquations();
     checkSolution();
@@ -76,14 +71,13 @@ function evaluateOperation(term, operation, number) {
             case "+": return term + number;
             case "-": return term - number;
             case "*": return term * number;
-            case "/": return Math.floor(term / number);  // Division by integer
+            case "/": return Math.floor(term / number);
         }
     }
-    return term; // Return "x" as-is
+    return term;
 }
 
 function simplifyEquationSide(side) {
-    // Combine terms by summing all numbers
     const terms = side.filter(term => term !== "x");
     const xTerm = side.includes("x") ? ["x"] : [];
     const totalSum = terms.reduce((sum, term) => sum + term, 0);
@@ -106,13 +100,8 @@ function checkSolution() {
 function nextTurn() {
     drawNumbers();
 
-    // Reset Apply Operation buttons color
-    document.getElementById("player1ApplyBtn").style.backgroundColor = "";
-    document.getElementById("player2ApplyBtn").style.backgroundColor = "";
+    document.getElementById("player1ApplyBtn").classList.remove("applied");
+    document.getElementById("player2ApplyBtn").classList.remove("applied");
 
-    displayEquations(); // Refresh equations for the new round
-
-    // Clear feedback messages
-    document.getElementById("p1Feedback").innerText = '';
-    document.getElementById("p2Feedback").innerText = '';
+    displayEquations();
 }
