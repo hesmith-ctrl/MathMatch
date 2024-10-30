@@ -1,0 +1,64 @@
+/* Styling to make the game more engaging */
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.card {
+    display: inline-block;
+    padding: 20px;
+    margin: 15px;
+    background: #eaf2f8;
+    border: 3px solid #3498db;
+    border-radius: 10px;
+    width: 45%;
+}
+
+.card h2 {
+    color: #2980b9;
+}
+
+input[type="text"], select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 15px;
+    background: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #3498db;
+}
+
+#result {
+    font-weight: bold;
+    color: #2c3e50;
+}
