@@ -22,11 +22,10 @@ function startGame() {
 }
 
 function generateEquation() {
-    // Generate random equation with 1 pronumeral on each side
     let left = [getRandomTerm(), getRandomTerm(), "x"];
     let right = [getRandomTerm(), getRandomTerm()];
     return {
-        left: left.sort(() => Math.random() - 0.5), // Shuffle for randomness
+        left: left.sort(() => Math.random() - 0.5),
         right: right.sort(() => Math.random() - 0.5)
     };
 }
@@ -60,20 +59,18 @@ function applyOperation(player) {
     equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
     equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
 
-    // Update feedback to confirm the operation has been applied
-    if (player === "player1") {
-        document.getElementById("p1Feedback").innerText = `Applied ${operation} ${drawnNumber} to both sides`;
-    } else {
-        document.getElementById("p2Feedback").innerText = `Applied ${operation} ${drawnNumber} to both sides`;
-    }
+    // Simplify the equation after operation
+    equation.left = simplifyEquationSide(equation.left);
+    equation.right = simplifyEquationSide(equation.right);
 
-    // Display the updated equation immediately
+    // Change Apply Operation button color to green to show it's been applied
+    document.getElementById(player + "ApplyBtn").style.backgroundColor = "green";
+
     displayEquations();
-    checkSolution();  // Check if the equation is solved
+    checkSolution();
 }
 
 function evaluateOperation(term, operation, number) {
-    // Apply the operation only to numeric terms, skip "x" (the pronumeral)
     if (typeof term === "number") {
         switch (operation) {
             case "+": return term + number;
@@ -85,8 +82,15 @@ function evaluateOperation(term, operation, number) {
     return term; // Return "x" as-is
 }
 
+function simplifyEquationSide(side) {
+    // Combine terms by summing all numbers
+    const terms = side.filter(term => term !== "x");
+    const xTerm = side.includes("x") ? ["x"] : [];
+    const totalSum = terms.reduce((sum, term) => sum + term, 0);
+    return totalSum ? [totalSum, ...xTerm] : xTerm;
+}
+
 function checkSolution() {
-    // Check if each equation is simplified to "x = [number]"
     const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
     const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
 
@@ -100,8 +104,13 @@ function checkSolution() {
 }
 
 function nextTurn() {
-    // Draw new numbers for each player at the start of the new turn
     drawNumbers();
+
+    // Reset Apply Operation buttons color
+    document.getElementById("player1ApplyBtn").style.backgroundColor = "";
+    document.getElementById("player2ApplyBtn").style.backgroundColor = "";
+
+    displayEquations(); // Refresh equations for the new round
 
     // Clear feedback messages
     document.getElementById("p1Feedback").innerText = '';
