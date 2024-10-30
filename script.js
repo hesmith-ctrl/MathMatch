@@ -60,29 +60,33 @@ function applyOperation(player) {
     equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
     equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
 
+    // Update feedback to confirm the operation has been applied
     if (player === "player1") {
         document.getElementById("p1Feedback").innerText = `Applied ${operation} ${drawnNumber} to both sides`;
     } else {
         document.getElementById("p2Feedback").innerText = `Applied ${operation} ${drawnNumber} to both sides`;
     }
 
+    // Display the updated equation immediately
     displayEquations();
-    checkSolution();
+    checkSolution();  // Check if the equation is solved
 }
 
 function evaluateOperation(term, operation, number) {
+    // Apply the operation only to numeric terms, skip "x" (the pronumeral)
     if (typeof term === "number") {
         switch (operation) {
             case "+": return term + number;
             case "-": return term - number;
             case "*": return term * number;
-            case "/": return Math.floor(term / number);
+            case "/": return Math.floor(term / number);  // Division by integer
         }
     }
-    return term;
+    return term; // Return "x" as-is
 }
 
 function checkSolution() {
+    // Check if each equation is simplified to "x = [number]"
     const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
     const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
 
@@ -96,7 +100,10 @@ function checkSolution() {
 }
 
 function nextTurn() {
+    // Draw new numbers for each player at the start of the new turn
     drawNumbers();
+
+    // Clear feedback messages
     document.getElementById("p1Feedback").innerText = '';
     document.getElementById("p2Feedback").innerText = '';
 }
