@@ -1,107 +1,78 @@
-let player1Equation, player2Equation;
-let player1Drawn, player2Drawn;
-let player1Name, player2Name;
+// JavaScript for the algebra game
 
-function startGame() {
-    player1Name = document.getElementById("player1Name").value || "Player 1";
-    player2Name = document.getElementById("player2Name").value || "Player 2";
+// Define initial equations and values for each player
+let players = [
+    { name: "", equation: "x = 5", drawnNumber: 7 },
+    { name: "", equation: "x = 2", drawnNumber: 4 }
+];
 
-    document.getElementById("player1Title").innerText = player1Name;
-    document.getElementById("player2Title").innerText = player2Name;
+let currentPlayerIndex = 0;
+let targetValue = 10;
 
-    document.getElementById("nameEntry").style.display = "none";
-    document.getElementById("gameArea").style.display = "block";
+// Function to apply an operation to the current player's equation
+function applyOperation(operation, playerIndex) {
+    let player = players[playerIndex];
+    let [lhs, rhs] = player.equation.split(" = ");
+    rhs = eval(rhs + operation + player.drawnNumber); // Evaluate the operation
 
-    player1Equation = generateEquation();
-    player2Equation = generateEquation();
+    // Update the equation and simplify it
+    player.equation = `${lhs} = ${rhs}`;
+    document.getElementById(`equation-${playerIndex}`).textContent = `Equation: ${player.equation}`;
 
-    displayEquations();
-    drawNumbers();
+    // Indicate operation applied by turning button green temporarily
+    let button = document.getElementById(`apply-btn-${playerIndex}`);
+    button.classList.add("active");
+    setTimeout(() => button.classList.remove("active"), 300); // Revert color after 300ms
 }
 
-function generateEquation() {
-    let left = [getRandomTerm(), getRandomTerm(), "x"];
-    let right = [getRandomTerm(), getRandomTerm()];
-    return {
-        left: left.sort(() => Math.random() - 0.5),
-        right: right.sort(() => Math.random() - 0.5)
-    };
-}
-
-function getRandomTerm() {
-    return Math.floor(Math.random() * 10 + 1);
-}
-
-function displayEquations() {
-    document.getElementById("p1Equation").innerText = formatEquation(player1Equation);
-    document.getElementById("p2Equation").innerText = formatEquation(player2Equation);
-}
-
-function formatEquation(equation) {
-    return equation.left.join(" + ") + " = " + equation.right.join(" + ");
-}
-
-function drawNumbers() {
-    player1Drawn = Math.floor(Math.random() * 10 + 1);
-    player2Drawn = Math.floor(Math.random() * 10 + 1);
-    document.getElementById("p1Drawn").innerText = player1Drawn;
-    document.getElementById("p2Drawn").innerText = player2Drawn;
-}
-
-function applyOperation(player) {
-    const operation = document.getElementById(player + "Operation").value;
-    const drawnNumber = player === "player1" ? player1Drawn : player2Drawn;
-    const equation = player === "player1" ? player1Equation : player2Equation;
-
-    equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
-    equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
-
-    equation.left = simplifyEquationSide(equation.left);
-    equation.right = simplifyEquationSide(equation.right);
-
-    document.getElementById(player + "ApplyBtn").classList.add("applied");
-
-    displayEquations();
-    checkSolution();
-}
-
-function evaluateOperation(term, operation, number) {
-    if (typeof term === "number") {
-        switch (operation) {
-            case "+": return term + number;
-            case "-": return term - number;
-            case "*": return term * number;
-            case "/": return Math.floor(term / number);
+// Function to check if any player has won
+function checkWinner() {
+    for (let player of players) {
+        let [, rhs] = player.equation.split(" = ");
+        if (parseInt(rhs) === targetValue) {
+            document.getElementById("winner-msg").textContent = `${player.name} wins!`;
+            document.getElementById("next-turn-btn").disabled = true;
+            return true;
         }
     }
-    return term;
+    return false;
 }
 
-function simplifyEquationSide(side) {
-    const terms = side.filter(term => term !== "x");
-    const xTerm = side.includes("x") ? ["x"] : [];
-    const totalSum = terms.reduce((sum, term) => sum + term, 0);
-    return totalSum ? [totalSum, ...xTerm] : xTerm;
-}
-
-function checkSolution() {
-    const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
-    const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
-
-    if (p1Solved && p2Solved) {
-        document.getElementById("result").innerText = "It's a tie!";
-    } else if (p1Solved) {
-        document.getElementById("result").innerText = `${player1Name} wins!`;
-    } else if (p2Solved) {
-        document.getElementById("result").innerText = `${player2Name} wins!`;
-    }
-}
-
+// Function to handle the next turn
 function nextTurn() {
-    drawNumbers();
+    // Check if someone has won before continuing
+    if (checkWinner()) return;
 
-    document.getElementById("player1ApplyBtn").classList.remove("applied");
-    document.getElementById("player2ApplyBtn").classList.remove("applied");
+    // Switch to the next player
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 
-    displayEquations();
+    // Update display for each player's equation and drawn number
+    players.forEach((player, index) => {
+        document.getElementById(`equation-${index}`).textContent = `Equation: ${player.equation}`;
+        document.getElementById(`drawn-number-${index}`).textContent = `Drawn Number: ${player.drawnNumber}`;
+    });
 }
+
+// Start the game and initialize player names
+document.getElementById("start-game-btn").addEventListener("click", function() {
+    players[0].name = document.getElementById("player1-name").value || "Player 1";
+    players[1].name = document.getElementById("player2-name").value || "Player 2";
+
+    document.getElementById("player1-header").textContent = players[0].name;
+    document.getElementById("player2-header").textContent = players[1].name;
+
+    document.getElementById("start-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+});
+
+// Set up event listeners for apply and next turn buttons
+window.onload = function() {
+    players.forEach((player, index) => {
+        document.getElementById(`apply-btn-${index}`).addEventListener("click", () => {
+            let operation = document.getElementById(`operation-${index}`).value;
+            applyOperation(operation, index);
+        });
+    });
+
+    document.getElementById("next-turn-btn").addEventListener("click", nextTurn);
+};
