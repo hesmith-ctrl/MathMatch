@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Algebra Showdown</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to CSS file -->
+</head>
+<body>
+    <div class="container">
+        <h1>Algebra Showdown</h1>
+        <p>Solve for x before your opponent does!</p>
+
+        <div id="nameEntry">
+            <input type="text" id="player1Name" placeholder="Enter Player 1 Name">
+            <input type="text" id="player2Name" placeholder="Enter Player 2 Name">
+            <button onclick="startGame()">Start Game</button>
+        </div>
+
+        <div id="gameArea" style="display: none;">
+            <div id="player1" class="card">
+                <h2 id="player1Title"></h2>
+                <p>Equation: <span id="p1Equation"></span></p>
+                <p>Drawn Number: <span id="p1Drawn"></span></p>
+                <select id="p1Operation">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+                <button onclick="applyOperation('player1')">Apply Operation</button>
+                <p id="p1Feedback"></p>
+            </div>
+
+            <div id="player2" class="card">
+                <h2 id="player2Title"></h2>
+                <p>Equation: <span id="p2Equation"></span></p>
+                <p>Drawn Number: <span id="p2Drawn"></span></p>
+                <select id="p2Operation">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+                <button onclick="applyOperation('player2')">Apply Operation</button>
+                <p id="p2Feedback"></p>
+            </div>
+
+            <p id="result"></p>
+            <button onclick="nextTurn()">Next Turn</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- Link to JavaScript file -->
+</body>
+</html>
