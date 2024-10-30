@@ -3,49 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algebra Challenge Game</title>
+    <title>MathMatch</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Algebra Challenge Game</h1>
-
-    <!-- Start Screen for Player Names -->
-    <div id="start-screen">
-        <label for="player1-name">Player 1 Name:</label>
-        <input type="text" id="player1-name" placeholder="Enter Player 1 Name">
-        <br>
-        <label for="player2-name">Player 2 Name:</label>
-        <input type="text" id="player2-name" placeholder="Enter Player 2 Name">
-        <br>
-        <button id="start-game-btn">Start Game</button>
+    <div id="nameEntry">
+        <h2>Enter Player Names</h2>
+        <input id="player1Name" placeholder="Player 1 Name">
+        <input id="player2Name" placeholder="Player 2 Name">
+        <button onclick="startGame()">Start Game</button>
     </div>
 
-    <!-- Game Screen (Hidden initially) -->
-    <div id="game-screen" style="display: none;">
-        <h2 id="player1-header"></h2>
-        <p id="equation-0">Equation: x = 5</p>
-        <p id="drawn-number-0">Drawn Number: 7</p>
-        <select id="operation-0">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-        <button id="apply-btn-0" class="operation-btn">Apply Operation</button>
+    <div id="gameArea" style="display:none;">
+        <h1 id="gameTitle">MathMatch...A Henry Smith Production</h1>
+        
+        <div id="player1Section">
+            <h2 id="player1Title">Player 1</h2>
+            <p>Equation: <span id="p1Equation"></span></p>
+            <p>Drawn Number: <span id="p1Drawn"></span></p>
+            <select id="player1Operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
+            <p id="p1Feedback"></p>
+        </div>
 
-        <h2 id="player2-header"></h2>
-        <p id="equation-1">Equation: x = 2</p>
-        <p id="drawn-number-1">Drawn Number: 4</p>
-        <select id="operation-1">
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-        </select>
-        <button id="apply-btn-1" class="operation-btn">Apply Operation</button>
+        <div id="player2Section">
+            <h2 id="player2Title">Player 2</h2>
+            <p>Equation: <span id="p2Equation"></span></p>
+            <p>Drawn Number: <span id="p2Drawn"></span></p>
+            <select id="player2Operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
+            <p id="p2Feedback"></p>
+        </div>
 
-        <button id="next-turn-btn" class="next-btn">Next Turn</button>
-        <p id="winner-msg"></p>
+        <button onclick="nextTurn()">Next Turn</button>
+        <h3 id="result"></h3>
     </div>
 
     <script src="script.js"></script>
