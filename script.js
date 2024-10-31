@@ -56,14 +56,14 @@ function formatEquation(equation) {
 }
 
 function simplifyExpression(expression) {
-  // Implement basic simplification rules (e.g., combining like terms)
-  // You can add more complex simplification rules as needed
-  // For now, a simple approach can be to use a library like SymPy or to implement basic rules manually.
-
-  // Example of a simple simplification:
+  // Basic simplification rules (e.g., combining like terms)
   // ... (implementation of simplification rules)
 
-  return expression;
+  // For now, a simple approach can be to use regular expressions to identify patterns:
+  const simplifiedExpression = expression.replace(/(\d+)x \+ (\d+)x/g, '($1 + $2)x');
+  // ... (add more simplification rules as needed)
+
+  return simplifiedExpression;
 }
 
 function drawNumbers() {
@@ -73,14 +73,90 @@ function drawNumbers() {
   document.getElementById("p2Drawn").innerText = player2Drawn;
 }
 
-// ... rest of the code remains the same ...
+function applyOperation(player) {
+  const operation = document.getElementById(player + "Operation").value;
+  const drawnNumber = player === "player1" ? player1Drawn : player2Drawn;
+  const equation = player === "player1" ? player1Equation : player2Equation;
 
-// Updated evaluateOperation function to handle more complex expressions
+  equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
+  equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
+
+  equation.left = simplifyEquationSide(equation.left);
+  equation.right = simplifyEquationSide(equation.right);
+
+  if (checkDecimalLimit(equation.left) || checkDecimalLimit(equation.right)) {
+    document.getElementById("result").innerText = `${player === "player1" ? player2Name : player1Name} wins!`;
+    document.getElementById("gameArea").style.display = "none";
+    return;
+  }
+
+  document.getElementById(player + "ApplyBtn").classList.add("applied");
+
+  displayEquations();
+  checkSolution();
+}
+
 function evaluateOperation(term, operation, number) {
-  // ... (previous implementation)
-  // ... (additional logic for handling more complex expressions)
+  if (typeof term === "number") {
+    switch (operation) {
+      case "+": return term + number;
+      case "-": return term - number;
+      case "*": return term * number;
+      case "/": return term / number;
+    }
+  } else if (typeof term === "string") {
+    if (term.includes("x")) {
+      // Operations with terms involving 'x'
+      switch (operation) {
+        case "+": return term + " + " + number;
+        case "-": return term + " - " + number;
+        case "*": return term + " * " + number;
+        case "/": return term + " / " + number;
+      }
+    } else if (term.includes("—")) { // Check for vinculum symbol
+      // Operations with fractions
+      const [numerator, denominator] = term.split("—");
+      switch (operation) {
+        case "+": return (parseFloat(numerator) + number) + "—" + denominator;
+        case "-": return (parseFloat(numerator) - number) + "—" + denominator;
+        case "*": return term + " × " + number;
+        case "/": return term + " ÷ " + number;
+      }
+    } else {
+      // Invalid term format
+      return "Invalid term";
+    }
+  }
+  return term;
+}
 
-  // For example, to handle expressions like "2x + 3 + 4x":
-  // You can parse the expression, identify terms, and apply the operation accordingly.
-  // This requires more advanced parsing and evaluation techniques.
+function simplifyEquationSide(side) {
+  const terms = side.filter(term => term !== "x");
+  const xTerm = side.includes("x") ? ["x"] : [];
+  const totalSum = terms.reduce((sum, term) => sum + term, 0);
+  return totalSum ? [totalSum, ...xTerm] : xTerm;
+}
+
+function checkDecimalLimit(side) {
+  return side.some(term => typeof term === "number" && term.toString().includes('.') && term.toString().split('.')[1].length > 2);
+}
+
+function checkSolution() {
+  const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
+  const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
+
+  if (p1Solved || p2Solved) {
+    const winner = p1Solved ? player1Name : player2Name;
+    document.getElementById("result").innerText = `${winner} wins!`;
+    document.getElementById("gameArea").style.display = "none";
+  }
+}
+
+function nextTurn() {
+  drawNumbers();
+
+  document.getElementById("player1ApplyBtn").classList.remove("applied");
+  document.getElementById("player2ApplyBtn").classList.remove("applied");
+
+  displayEquations();
 }
