@@ -5,27 +5,25 @@ let player1Name, player2Name;
 function startGame() {
     player1Name = document.getElementById("player1Name").value || "Player 1";
     player2Name = document.getElementById("player2Name").value || "Player 2";
-
+    
     document.getElementById("player1Title").innerText = player1Name;
     document.getElementById("player2Title").innerText = player2Name;
-
+    
     document.getElementById("nameEntry").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
-
+    
     player1Equation = generateEquation();
     player2Equation = generateEquation();
-
+    
     displayEquations();
     drawNumbers();
 }
 
 function generateEquation() {
-    let operators = ['+', '-', '*', '/'];
-    let randomOperator = operators[Math.floor(Math.random() * operators.length)];
-    return {
-        left: [getRandomTerm(), randomOperator, "x"],
-        right: [getRandomTerm()]
-    };
+    let left = [getRandomTerm(), getRandomTerm(), "x"];
+    let right = [getRandomTerm(), getRandomTerm()];
+    
+    return { left: left.sort(() => Math.random() - 0.5), right: right.sort(() => Math.random() - 0.5) };
 }
 
 function getRandomTerm() {
@@ -38,12 +36,13 @@ function displayEquations() {
 }
 
 function formatEquation(equation) {
-    return equation.left.join(" ") + " = " + equation.right.join(" ");
+    return equation.left.join(" + ") + " = " + equation.right.join(" + ");
 }
 
 function drawNumbers() {
     player1Drawn = Math.floor(Math.random() * 10 + 1);
     player2Drawn = Math.floor(Math.random() * 10 + 1);
+    
     document.getElementById("p1Drawn").innerText = player1Drawn;
     document.getElementById("p2Drawn").innerText = player2Drawn;
 }
@@ -59,14 +58,8 @@ function applyOperation(player) {
     equation.left = simplifyEquationSide(equation.left);
     equation.right = simplifyEquationSide(equation.right);
 
-    if (checkDecimalLimit(equation.left) || checkDecimalLimit(equation.right)) {
-        document.getElementById("result").innerText = `${player === "player1" ? player2Name : player1Name} wins!`;
-        document.getElementById("gameArea").style.display = "none";
-        return;
-    }
-
     document.getElementById(player + "ApplyBtn").classList.add("applied");
-
+    
     displayEquations();
     checkSolution();
 }
@@ -77,7 +70,7 @@ function evaluateOperation(term, operation, number) {
             case "+": return term + number;
             case "-": return term - number;
             case "*": return term * number;
-            case "/": return parseFloat((term / number).toFixed(2));
+            case "/": return Math.floor(term / number);
         }
     }
     return term;
@@ -90,26 +83,22 @@ function simplifyEquationSide(side) {
     return totalSum ? [totalSum, ...xTerm] : xTerm;
 }
 
-function checkDecimalLimit(side) {
-    return side.some(term => typeof term === "number" && term.toString().includes('.') && term.toString().split('.')[1].length > 2);
-}
-
 function checkSolution() {
     const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
     const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
 
-    if (p1Solved || p2Solved) {
-        const winner = p1Solved ? player1Name : player2Name;
-        document.getElementById("result").innerText = `${winner} wins!`;
-        document.getElementById("gameArea").style.display = "none";
+    if (p1Solved && p2Solved) {
+        document.getElementById("result").innerText = "It's a tie!";
+    } else if (p1Solved) {
+        document.getElementById("result").innerText = `${player1Name} wins!`;
+    } else if (p2Solved) {
+        document.getElementById("result").innerText = `${player2Name} wins!`;
     }
 }
 
 function nextTurn() {
     drawNumbers();
-
     document.getElementById("player1ApplyBtn").classList.remove("applied");
     document.getElementById("player2ApplyBtn").classList.remove("applied");
-
     displayEquations();
 }
