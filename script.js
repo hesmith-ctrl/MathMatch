@@ -1,4 +1,3 @@
-
 let player1Equation, player2Equation;
 let player1Drawn, player2Drawn;
 let player1Name, player2Name;
@@ -21,11 +20,11 @@ function startGame() {
 }
 
 function generateEquation() {
-    let left = [getRandomTerm(), getRandomTerm(), "x"];
-    let right = [getRandomTerm(), getRandomTerm()];
+    let operators = ['+', '-', '*', '/'];
+    let randomOperator = operators[Math.floor(Math.random() * operators.length)];
     return {
-        left: left.sort(() => Math.random() - 0.5),
-        right: right.sort(() => Math.random() - 0.5)
+        left: [getRandomTerm(), randomOperator, "x"],
+        right: [getRandomTerm()]
     };
 }
 
@@ -39,7 +38,7 @@ function displayEquations() {
 }
 
 function formatEquation(equation) {
-    return equation.left.join(" + ") + " = " + equation.right.join(" + ");
+    return equation.left.join(" ") + " = " + equation.right.join(" ");
 }
 
 function drawNumbers() {
@@ -60,6 +59,12 @@ function applyOperation(player) {
     equation.left = simplifyEquationSide(equation.left);
     equation.right = simplifyEquationSide(equation.right);
 
+    if (checkDecimalLimit(equation.left) || checkDecimalLimit(equation.right)) {
+        document.getElementById("result").innerText = `${player === "player1" ? player2Name : player1Name} wins!`;
+        document.getElementById("gameArea").style.display = "none";
+        return;
+    }
+
     document.getElementById(player + "ApplyBtn").classList.add("applied");
 
     displayEquations();
@@ -72,7 +77,7 @@ function evaluateOperation(term, operation, number) {
             case "+": return term + number;
             case "-": return term - number;
             case "*": return term * number;
-            case "/": return Math.floor(term / number);
+            case "/": return parseFloat((term / number).toFixed(2));
         }
     }
     return term;
@@ -85,16 +90,18 @@ function simplifyEquationSide(side) {
     return totalSum ? [totalSum, ...xTerm] : xTerm;
 }
 
+function checkDecimalLimit(side) {
+    return side.some(term => typeof term === "number" && term.toString().includes('.') && term.toString().split('.')[1].length > 2);
+}
+
 function checkSolution() {
     const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
     const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
 
-    if (p1Solved && p2Solved) {
-        document.getElementById("result").innerText = "It's a tie!";
-    } else if (p1Solved) {
-        document.getElementById("result").innerText = `${player1Name} wins!`;
-    } else if (p2Solved) {
-        document.getElementById("result").innerText = `${player2Name} wins!`;
+    if (p1Solved || p2Solved) {
+        const winner = p1Solved ? player1Name : player2Name;
+        document.getElementById("result").innerText = `${winner} wins!`;
+        document.getElementById("gameArea").style.display = "none";
     }
 }
 
