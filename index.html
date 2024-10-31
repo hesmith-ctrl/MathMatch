@@ -13,11 +13,11 @@
         <input id="player2Name" placeholder="Player 2 Name">
         <button onclick="startGame()">Start Game</button>
     </div>
-
+    
     <div id="gameArea" style="display:none;">
         <h1 id="gameTitle">MathMatch</h1>
-        <h3 id="subTitle">From the mind of Henry Smith</h3>
-
+        <h3 id="subheading">Challenge yourself with Math!</h3>
+        
         <div id="player1Section">
             <h2 id="player1Title">Player 1</h2>
             <p>Equation: <span id="p1Equation"></span></p>
@@ -29,9 +29,8 @@
                 <option value="/">/</option>
             </select>
             <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
-            <p id="p1Feedback"></p>
         </div>
-
+        
         <div id="player2Section">
             <h2 id="player2Title">Player 2</h2>
             <p>Equation: <span id="p2Equation"></span></p>
@@ -43,13 +42,11 @@
                 <option value="/">/</option>
             </select>
             <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
-            <p id="p2Feedback"></p>
         </div>
-
+        
         <button onclick="nextTurn()">Next Turn</button>
         <h3 id="result"></h3>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
