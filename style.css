@@ -1,3 +1,4 @@
+/* Basic styling for body and main game area */
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -5,15 +6,32 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url('background.jpg'); /* Add your background image here */
-    background-size: cover;
+    animation: bgColorChange 6s infinite;
 }
 
+@keyframes bgColorChange {
+    0% { background-color: #ff9a9e; }
+    25% { background-color: #fad0c4; }
+    50% { background-color: #fbc2eb; }
+    75% { background-color: #a1c4fd; }
+    100% { background-color: #ff9a9e; }
+}
+
+/* Game title background */
+#gameTitle, #subheading {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Game area styling */
 #gameArea, #nameEntry {
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 button {
@@ -23,16 +41,11 @@ button {
     cursor: pointer;
 }
 
-button#player1ApplyBtn,
-button#player2ApplyBtn {
+button#player1ApplyBtn, button#player2ApplyBtn {
     background-color: #f0f0f0;
 }
 
 button.applied {
     background-color: green;
     color: white;
-}
-
-h1, h3 {
-    color: #333;
 }
