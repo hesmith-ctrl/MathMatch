@@ -38,7 +38,14 @@ function displayEquations() {
 }
 
 function formatEquation(equation) {
-  return equation.left.join(" ") + " = " + equation.right.join(" ");
+  // Remove explicit multiplication symbol
+  let formattedLeft = equation.left.join(" ");
+  formattedLeft = formattedLeft.replace("x *", "x");
+
+  let formattedRight = equation.right.join(" ");
+  formattedRight = formattedRight.replace("x *", "x");
+
+  return formattedLeft + " = " + formattedRight;
 }
 
 function drawNumbers() {
@@ -85,8 +92,8 @@ function evaluateOperation(term, operation, number) {
       switch (operation) {
         case "+": return term + " + " + number;
         case "-": return term + " - " + number;
-        case "*": return "(" + term + ") * " + number;
-        case "/": return "(" + term + ") ÷ " + number; // Use the vinculum symbol for division
+        case "*": return term + " * " + number; // Keep multiplication symbol for clarity
+        case "/": return term + " ÷ " + number; // Use the vinculum symbol for division
       }
     } else if (term.includes("—")) { // Check for vinculum symbol
       // Operations with fractions
