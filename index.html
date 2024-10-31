@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathMatch</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathMatch</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="nameEntry">
-        <h2>Enter Player Names</h2>
-        <input id="player1Name" placeholder="Player 1 Name">
-        <input id="player2Name" placeholder="Player 2 Name">
-        <button onclick="startGame()">Start Game</button>
+  <div id="nameEntry">
+    <h2>Enter Player Names</h2>
+    <input id="player1Name" placeholder="Player 1 Name">
+    <input id="player2Name" placeholder="Player 2 Name">
+    <button onclick="startGame()">Start Game</button>
+  </div>
+
+  <div id="gameArea" style="display:none;">
+    <h1 id="gameTitle">MathMatch</h1>
+    <h3 id="subTitle">From the mind of Henry Smith</h3>
+
+    <div id="player1Section">
+      <h2 id="player1Title">Player 1</h2>
+      <p>Equation: <span id="p1Equation"></span></p>
+      <p>Drawn Number: <span id="p1Drawn"></span></p>
+      <select id="player1Operation">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">×</option>
+        <option value="/">÷</option>
+      </select>
+      <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
+      <p id="p1Feedback"></p>
     </div>
 
-    <div id="gameArea" style="display:none;">
-        <h1 id="gameTitle">MathMatch</h1>
-        <h3 id="subTitle">From the mind of Henry Smith</h3>
-
-        <div id="player1Section">
-            <h2 id="player1Title">Player 1</h2>
-            <p>Equation: <span id="p1Equation"></span></p>
-            <p>Drawn Number: <span id="p1Drawn"></span></p>
-            <select id="player1Operation">
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">*</option>
-                <option value="/">/</option>
-            </select>
-            <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
-            <p id="p1Feedback"></p>
-        </div>
-
-        <div id="player2Section">
-            <h2 id="player2Title">Player 2</h2>
-            <p>Equation: <span id="p2Equation"></span></p>
-            <p>Drawn Number: <span id="p2Drawn"></span></p>
-            <select id="player2Operation">
-                <option value="+">+</option>
-                <option value="-">-</option>
-                <option value="*">*</option>
-                <option value="/">/</option>
-            </select>
-            <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
-            <p id="p2Feedback"></p>
-        </div>
-
-        <button onclick="nextTurn()">Next Turn</button>
-        <h3 id="result"></h3>
+    <div id="player2Section">
+      <h2 id="player2Title">Player 2</h2>
+      <p>Equation: <span id="p2Equation"></span></p>
+      <p>Drawn Number: <span id="p2Drawn"></span></p>
+      <select id="player2Operation">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">×</option>
+        <option value="/">÷</option>
+      </select>
+      <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
+      <p id="p2Feedback"></p>
     </div>
 
-    <script src="script.js"></script>
+    <button onclick="nextTurn()">Next Turn</button>
+    <h3 id="result"></h3>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
