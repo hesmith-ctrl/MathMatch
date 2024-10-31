@@ -77,17 +77,29 @@ function evaluateOperation(term, operation, number) {
       case "+": return term + number;
       case "-": return term - number;
       case "*": return term * number;
-      case "/": return term / number; // directly perform division
+      case "/": return term / number;
     }
-  } else if (typeof term === "string" && term.includes("/")) {
-    const fractionParts = term.split("/");
-    const numerator = parseFloat(fractionParts[0]);
-    const denominator = parseFloat(fractionParts[1]);
-    switch (operation) {
-      case "+": return `${numerator + number}/${denominator}`; // perform addition on numerator
-      case "-": return `${numerator - number}/${denominator}`; // perform subtraction on numerator
-      case "*": return numerator * number; // multiply entire fraction
-      case "/": return "Error! Cannot divide fractions yet"; // handle division of fractions
+  } else if (typeof term === "string") {
+    if (term.includes("x")) {
+      // Operations with terms involving 'x'
+      switch (operation) {
+        case "+": return term + " + " + number;
+        case "-": return term + " - " + number;
+        case "*": return "(" + term + ") * " + number;
+        case "/": return "(" + term + ") ÷ " + number; // Use the vinculum symbol for division
+      }
+    } else if (term.includes("—")) { // Check for vinculum symbol
+      // Operations with fractions
+      const [numerator, denominator] = term.split("—");
+      switch (operation) {
+        case "+": return (parseFloat(numerator) + number) + "—" + denominator;
+        case "-": return (parseFloat(numerator) - number) + "—" + denominator;
+        case "*": return term + " × " + number; // Use the multiplication symbol
+        case "/": return term + " ÷ " + number; // Handle division of fractions appropriately
+      }
+    } else {
+      // Invalid term format
+      return "Invalid term";
     }
   }
   return term;
