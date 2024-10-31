@@ -1,31 +1,38 @@
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-image: url('background.jpg'); /* Add your background image here */
-  background-size: cover;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('background.jpg'); /* Add your background image here */
+    background-size: cover;
 }
 
 #gameArea, #nameEntry {
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 10px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 10px;
-  cursor: pointer;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 button#player1ApplyBtn,
 button#player2ApplyBtn {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
-button.
+button.applied {
+    background-color: green;
+    color: white;
+}
+
+h1, h3 {
+    color: #333;
+}
