@@ -1,3 +1,4 @@
+
 /* Reset styles */
 body, h1, h2, h3, p, input, button {
     margin: 0;
@@ -12,7 +13,6 @@ body {
     align-items: center;
     height: 100vh;
     animation: bgColorChange 6s infinite;
-    overflow: hidden; /* Prevents scrolling */
 }
 
 @keyframes bgColorChange {
@@ -23,16 +23,8 @@ body {
     100% { background-color: #ff9a9e; }
 }
 
-/* Square layout for the game area */
+/* Central container styling */
 #nameEntry, #gameArea {
-    width: 80vw;  /* Responsive square size */
-    height: 80vw;
-    max-width: 600px; /* Cap maximum size */
-    max-height: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     text-align: center;
     padding: 20px;
     border-radius: 10px;
