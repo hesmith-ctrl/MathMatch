@@ -1,7 +1,6 @@
 let player1Equation, player2Equation;
 let player1Drawn, player2Drawn;
 let player1Name, player2Name;
-let roundNumber = 1;
 
 function startGame() {
     player1Name = document.getElementById("player1Name").value || "Player 1";
@@ -12,8 +11,6 @@ function startGame() {
     
     document.getElementById("nameEntry").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
-
-    updateRoundDisplay();
     
     player1Equation = generateEquation();
     player2Equation = generateEquation();
@@ -61,12 +58,10 @@ function applyOperation(player) {
     equation.left = simplifyEquationSide(equation.left);
     equation.right = simplifyEquationSide(equation.right);
 
+    document.getElementById(player + "ApplyBtn").classList.add("applied");
+    
     displayEquations();
     checkSolution();
-
-    // Disable the Apply Operation button for this player until the next turn
-    document.getElementById(player + "ApplyBtn").disabled = true;
-    document.getElementById(player + "ApplyBtn").classList.add("disabled");
 }
 
 function evaluateOperation(term, operation, number) {
@@ -102,22 +97,8 @@ function checkSolution() {
 }
 
 function nextTurn() {
-    // Update the round number and display it
-    roundNumber++;
-    updateRoundDisplay();
-
-    // Draw new numbers for each player
     drawNumbers();
-
-    // Enable Apply Operation buttons for both players
-    document.getElementById("player1ApplyBtn").disabled = false;
-    document.getElementById("player2ApplyBtn").disabled = false;
-    document.getElementById("player1ApplyBtn").classList.remove("disabled");
-    document.getElementById("player2ApplyBtn").classList.remove("disabled");
-
+    document.getElementById("player1ApplyBtn").classList.remove("applied");
+    document.getElementById("player2ApplyBtn").classList.remove("applied");
     displayEquations();
-}
-
-function updateRoundDisplay() {
-    document.getElementById("roundDisplay").innerText = `Round ${roundNumber}`;
 }
