@@ -5,20 +5,37 @@ body, h1, h2, h3, p, input, button {
     font-family: Arial, sans-serif;
 }
 
-/* Overall body styling */
+/* Overall body styling with background color animation */
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f8ff;
-    color: #333;
+    animation: bgColorChange 6s infinite;
 }
 
-/* Logo styling */
+@keyframes bgColorChange {
+    0% { background-color: #ff9a9e; }
+    25% { background-color: #fad0c4; }
+    50% { background-color: #fbc2eb; }
+    75% { background-color: #a1c4fd; }
+    100% { background-color: #ff9a9e; }
+}
+
+/* Central container styling */
+#nameEntry, #gameArea {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo styling for prominent positioning */
 #logo {
     width: 150px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
+    display: block;
 }
 
 /* Main title styling */
@@ -26,7 +43,7 @@ body {
     font-size: 3em;
     color: #333;
     margin-bottom: 10px;
-    text-align: center;
+    font-weight: bold;
 }
 
 /* Styling for "A Henry Smith Production" subheading */
@@ -37,7 +54,6 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     margin: 10px 0;
     font-weight: bold;
-    text-align: center;
 }
 
 /* Subheading styling */
@@ -75,11 +91,6 @@ button {
 
 button:hover {
     background-color: #005fa3;
-}
-
-/* Game area styling */
-#gameArea {
-    text-align: center;
 }
 
 /* Player sections styling */
