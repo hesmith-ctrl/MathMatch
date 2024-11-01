@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MathMatch</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="MathMatch.ico.png"> 
 </head>
 <body>
     <div id="nameEntry">
@@ -16,13 +17,13 @@
         <input id="player2Name" placeholder="Player 2 Name">
         <button onclick="startGame()">Start Game</button>
     </div>
-    
+
     <div id="gameArea" style="display:none;">
         <img src="MathMatch logo.png" alt="MathMatch Logo" id="logo">
         <h1 id="gameTitle">MathMatch</h1>
         <h3 id="productionCredit">A Henry Smith Production</h3>
         <h3 id="subheading">Challenge yourself with Math!</h3>
-        
+
         <div id="player1Section">
             <h2 id="player1Title">Player 1</h2>
             <p>Equation: <span id="p1Equation"></span></p>
@@ -35,7 +36,7 @@
             </select>
             <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
         </div>
-        
+
         <div id="player2Section">
             <h2 id="player2Title">Player 2</h2>
             <p>Equation: <span id="p2Equation"></span></p>
@@ -48,7 +49,7 @@
             </select>
             <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
         </div>
-        
+
         <button onclick="nextTurn()">Next Turn</button>
         <h3 id="result"></h3>
     </div>
