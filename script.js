@@ -1,7 +1,7 @@
 let player1Equation, player2Equation;
 let player1Drawn, player2Drawn;
 let player1Name, player2Name;
-let currentRound = 1;
+let roundNumber = 1;
 
 function startGame() {
     player1Name = document.getElementById("player1Name").value || "Player 1";
@@ -12,17 +12,14 @@ function startGame() {
     
     document.getElementById("nameEntry").style.display = "none";
     document.getElementById("gameArea").style.display = "block";
-    
+
     updateRoundDisplay();
+    
     player1Equation = generateEquation();
     player2Equation = generateEquation();
     
     displayEquations();
     drawNumbers();
-}
-
-function updateRoundDisplay() {
-    document.getElementById("roundDisplay").innerText = `Round ${currentRound}`;
 }
 
 function generateEquation() {
@@ -64,12 +61,12 @@ function applyOperation(player) {
     equation.left = simplifyEquationSide(equation.left);
     equation.right = simplifyEquationSide(equation.right);
 
-    // Disable the Apply button
-    document.getElementById(player + "ApplyBtn").disabled = true;
-    document.getElementById(player + "ApplyBtn").classList.add("disabled");
-
     displayEquations();
     checkSolution();
+
+    // Disable the Apply Operation button for this player until the next turn
+    document.getElementById(player + "ApplyBtn").disabled = true;
+    document.getElementById(player + "ApplyBtn").classList.add("disabled");
 }
 
 function evaluateOperation(term, operation, number) {
@@ -105,15 +102,22 @@ function checkSolution() {
 }
 
 function nextTurn() {
-    currentRound++;
+    // Update the round number and display it
+    roundNumber++;
     updateRoundDisplay();
+
+    // Draw new numbers for each player
     drawNumbers();
 
-    // Re-enable Apply buttons for both players
+    // Enable Apply Operation buttons for both players
     document.getElementById("player1ApplyBtn").disabled = false;
     document.getElementById("player2ApplyBtn").disabled = false;
     document.getElementById("player1ApplyBtn").classList.remove("disabled");
     document.getElementById("player2ApplyBtn").classList.remove("disabled");
 
     displayEquations();
+}
+
+function updateRoundDisplay() {
+    document.getElementById("roundDisplay").innerText = `Round ${roundNumber}`;
 }
