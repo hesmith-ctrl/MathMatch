@@ -17,8 +17,22 @@ body {
     100% { background-color: #ff9a9e; }
 }
 
-/* Game title background */
-#gameTitle, #subheading {
+/* Styling for logo and title */
+#logo {
+    max-width: 200px;
+    margin: 0 auto 20px;
+    display: block;
+}
+
+#mainTitle, #gameTitle {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Subheading styling */
+#subheading {
     background-color: red;
     color: white;
     padding: 10px;
@@ -34,6 +48,7 @@ body {
     background-color: rgba(255, 255, 255, 0.8);
 }
 
+/* Button styling */
 button {
     padding: 10px 20px;
     font-size: 16px;
