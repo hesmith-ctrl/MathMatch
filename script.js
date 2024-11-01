@@ -70,8 +70,8 @@ function evaluateOperation(term, operation, number) {
     switch (operation) {
       case "+": return term + number;
       case "-": return term - number;
-      case "*": return term * number;
-      case "/": return Math.floor(term / number);
+      case "×": return term * number; // Changed multiplication symbol
+      case "÷": return Math.floor(term / number); // Changed division symbol
     }
   }
   return term;
