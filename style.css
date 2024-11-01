@@ -118,4 +118,20 @@ select {
 
 /* Result message styling */
 #result {
-  font-size: 1.2em
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #d9534f;
+  margin-top: 20px;
+}
+
+/* Style for applied buttons */
+.applied {
+  background-color: #ccc;
+  cursor: default;
+}
+
+#player1ApplyBtn.applied,
+#player2ApplyBtn.applied {
+  background-color: #ccc;
+  cursor: default;
+}
