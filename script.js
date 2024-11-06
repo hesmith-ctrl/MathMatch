@@ -92,10 +92,10 @@ function checkSolution() {
     document.getElementById("result").innerText = "It's a tie!";
   } else if (p1Solved) {
     document.getElementById("result").innerText = `${player1Name} wins!`;
-    window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; // Redirects on Player 1 win
+    window.location.href = "https://www.youtube.com/watch?v=RS0KrRG_q3I&t=13s"; // Redirects on Player 1 win
   } else if (p2Solved) {
     document.getElementById("result").innerText = `${player2Name} wins!`;
-    window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; // Redirects on Player 2 win
+    window.location.href = "https://www.youtube.com/watch?v=RS0KrRG_q3I&t=13s"; // Redirects on Player 2 win
   }
 }
 
