@@ -1,180 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equation Game</title>
-<style>
-  /* Basic styles for layout and visibility */
-  #gameArea, #instructions { display: none; }
-  .section { margin: 20px; }
-  .applied { background-color: #d3d3d3; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMatch</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png">
 </head>
 <body>
+    <!-- Name Entry Section -->
+    <div id="nameEntry">
+        <img src="MathMatch logo.png" alt="MathMatch Logo" id="logo">
+        <h1 id="mainTitle">MathMatch</h1>
+        <h3 id="productionCredit">A Henry Smith Production</h3>
+        
+        <!-- Instructions Section -->
+        <div id="instructions">
+            <h3>How to Play</h3>
+            <p>Each player will take turns drawing a number and applying an operation (+, -, ×, ÷) to an equation.</p>
+            <p>Your goal is to solve the equation by replacing the variable "x" with a number.</p>
+            <p>After applying your operation, press "Next Turn" to proceed to the next round.</p>
+        </div>
 
-<div id="nameEntry" class="section">
-  <h2>Enter Player Names</h2>
-  <label>Player 1: <input type="text" id="player1Name" placeholder="Player 1"></label>
-  <label>Player 2: <input type="text" id="player2Name" placeholder="Player 2"></label>
-  <button onclick="startGame()">Start Game</button>
+        <!-- Player Name Inputs -->
+        <h2>Enter Player Names</h2>
+        <input id="player1Name" placeholder="Player 1 Name">
+        <input id="player2Name" placeholder="Player 2 Name">
+        <button onclick="startGame()">Start Game</button>
+    </div>
 
-  <div id="instructions" class="section">
-    <h3>Game Instructions</h3>
-    <p>
-      <strong>Objective:</strong> Solve your equation so that only <strong>"x"</strong> remains on one side.
-      The first player to do this wins!
-    </p>
-    <p><strong>How to Play:</strong></p>
-    <ol>
-      <li><strong>Enter Your Names:</strong> Start by entering player names, or keep the defaults.</li>
-      <li><strong>Understand Your Equation:</strong> Each player gets a unique equation with numbers and "x" on both sides.</li>
-      <li><strong>Draw a Number:</strong> At each turn, a random number is drawn for each player to simplify their equation.</li>
-      <li><strong>Choose an Operation:</strong> Use the drawn number to add (+), subtract (-), multiply (×), or divide (÷) on both sides.</li>
-      <li><strong>Apply Your Move:</strong> Aim to isolate <strong>"x"</strong> on one side by applying operations each turn.</li>
-      <li><strong>Next Turn:</strong> Draw a new number and repeat until one player has only "x" on one side!</li>
-    </ol>
-    <p><strong>Winning the Game:</strong> The first player to isolate "x" wins and is taken to a celebratory link!</p>
-  </div>
-</div>
+    <!-- Game Area -->
+    <div id="gameArea" style="display:none;">
+        <img src="MathMatch logo.png" alt="MathMatch Logo" id="logo">
+        <h1 id="gameTitle">MathMatch</h1>
+        <h3 id="productionCredit">A Henry Smith Production</h3>
+        <h3 id="subheading">Challenge yourself with Math!</h3>
 
-<div id="gameArea" class="section">
-  <h2 id="player1Title">Player 1</h2>
-  <p id="p1Equation"></p>
-  <p>Drawn Number: <span id="p1Drawn"></span></p>
-  <select id="player1Operation">
-    <option value="+">+</option>
-    <option value="-">-</option>
-    <option value="×">×</option>
-    <option value="÷">÷</option>
-  </select>
-  <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
+        <div id="player1Section">
+            <h2 id="player1Title">Player 1</h2>
+            <p>Equation: <span id="p1Equation"></span></p>
+            <p>Drawn Number: <span id="p1Drawn"></span></p>
+            <select id="player1Operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="×">×</option>
+                <option value="÷">÷</option>
+            </select>
+            <button id="player1ApplyBtn" onclick="applyOperation('player1')">Apply Operation</button>
+        </div>
 
-  <h2 id="player2Title">Player 2</h2>
-  <p id="p2Equation"></p>
-  <p>Drawn Number: <span id="p2Drawn"></span></p>
-  <select id="player2Operation">
-    <option value="+">+</option>
-    <option value="-">-</option>
-    <option value="×">×</option>
-    <option value="÷">÷</option>
-  </select>
-  <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
+        <div id="player2Section">
+            <h2 id="player2Title">Player 2</h2>
+            <p>Equation: <span id="p2Equation"></span></p>
+            <p>Drawn Number: <span id="p2Drawn"></span></p>
+            <select id="player2Operation">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="×">×</option>
+                <option value="÷">÷</option>
+            </select>
+            <button id="player2ApplyBtn" onclick="applyOperation('player2')">Apply Operation</button>
+        </div>
 
-  <button onclick="nextTurn()">Next Turn</button>
-  <p id="result"></p>
-</div>
+        <button onclick="nextTurn()">Next Turn</button>
+        <h3 id="result"></h3>
+    </div>
 
-<script>
-let player1Equation, player2Equation;
-let player1Drawn, player2Drawn;
-let player1Name, player2Name;
-
-function startGame() {
-  player1Name = document.getElementById("player1Name").value || "Player 1";
-  player2Name = document.getElementById("player2Name").value || "Player 2";
-
-  document.getElementById("player1Title").innerText = player1Name;
-  document.getElementById("player2Title").innerText = player2Name;
-
-  // Hide name entry and instructions, show game area
-  document.getElementById("nameEntry").style.display = "none";
-  document.getElementById("gameArea").style.display = "block";
-
-  player1Equation = generateEquation();
-  player2Equation = generateEquation();
-
-  displayEquations();
-  drawNumbers();
-}
-
-function generateEquation() {
-  let left = [getRandomTerm(), getRandomTerm(), "x"];
-  let right = [getRandomTerm(), getRandomTerm()];
-
-  return { left: left.sort(() => Math.random() - 0.5), right: right.sort(() => Math.random() - 0.5) };
-}
-
-function getRandomTerm() {
-  return Math.floor(Math.random() * 10 + 1);
-}
-
-function displayEquations() {
-  document.getElementById("p1Equation").innerText = formatEquation(player1Equation);
-  document.getElementById("p2Equation").innerText = formatEquation(player2Equation);
-}
-
-function formatEquation(equation) {
-  return equation.left.join(" + ") + " = " + equation.right.join(" + ");
-}
-
-function drawNumbers() {
-  player1Drawn = Math.floor(Math.random() * 10 + 1);
-  player2Drawn = Math.floor(Math.random() * 10 + 1);
-
-  document.getElementById("p1Drawn").innerText = player1Drawn;
-  document.getElementById("p2Drawn").innerText = player2Drawn;
-}
-
-function applyOperation(player) {
-  const operation = document.getElementById(player + "Operation").value;
-  const drawnNumber = player === "player1" ? player1Drawn : player2Drawn;
-  const equation = player === "player1" ? player1Equation : player2Equation;
-
-  equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
-  equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
-
-  equation.left = simplifyEquationSide(equation.left);
-  equation.right = simplifyEquationSide(equation.right);
-
-  document.getElementById(player + "ApplyBtn").classList.remove("applied");
-  document.getElementById(player + "ApplyBtn").classList.add("applied");
-
-  displayEquations();
-  checkSolution();
-}
-
-function evaluateOperation(term, operation, number) {
-  if (typeof term === "number") {
-    switch (operation) {
-      case "+": return term + number;
-      case "-": return term - number;
-      case "×": return term * number;
-      case "÷": return Math.floor(term / number);
-    }
-  }
-  return term;
-}
-
-function simplifyEquationSide(side) {
-  const terms = side.filter(term => term !== "x");
-  const xTerm = side.includes("x") ? ["x"] : [];
-  const totalSum = terms.reduce((sum, term) => sum + term, 0);
-  return totalSum ? [totalSum, ...xTerm] : xTerm;
-}
-
-function checkSolution() {
-  const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
-  const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
-
-  if (p1Solved && p2Solved) {
-    document.getElementById("result").innerText = "It's a tie!";
-  } else if (p1Solved) {
-    document.getElementById("result").innerText = `${player1Name} wins!`;
-    setTimeout(() => { window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; }, 2000);
-  } else if (p2Solved) {
-    document.getElementById("result").innerText = `${player2Name} wins!`;
-    setTimeout(() => { window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; }, 2000);
-  }
-}
-
-function nextTurn() {
-  drawNumbers();
-  document.getElementById("player1ApplyBtn").classList.remove("applied");
-  document.getElementById("player2ApplyBtn").classList.remove("applied");
-  displayEquations();
-}
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
