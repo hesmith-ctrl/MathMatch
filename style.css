@@ -62,6 +62,13 @@ h2, h3 {
   margin: 10px 0;
 }
 
+/* Instructions styling */
+#instructions {
+  margin-bottom: 30px;
+  font-size: 1.2em;
+  color: #333;
+}
+
 /* Player name input styling */
 input[type="text"] {
   display: block;
