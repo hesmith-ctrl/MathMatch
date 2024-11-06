@@ -23,85 +23,52 @@ function generateEquation() {
   let left = [getRandomTerm(), getRandomTerm(), "x"];
   let right = [getRandomTerm(), getRandomTerm()];
 
-  return { left: left.sort(() => Math.random() - 0.5), right: right.sort(() => Math.random() - 0.5) };
+  return left.join(" ") + " = " + right.join(" ");
 }
 
 function getRandomTerm() {
-  return Math.floor(Math.random() * 10 + 1);
-}
-
-function displayEquations() {
-  document.getElementById("p1Equation").innerText = formatEquation(player1Equation);
-  document.getElementById("p2Equation").innerText = formatEquation(player2Equation);
-}
-
-function formatEquation(equation) {
-  return equation.left.join(" + ") + " = " + equation.right.join(" + ");
+  return Math.floor(Math.random() * 10) + 1;
 }
 
 function drawNumbers() {
-  player1Drawn = Math.floor(Math.random() * 10 + 1);
-  player2Drawn = Math.floor(Math.random() * 10 + 1);
+  player1Drawn = Math.floor(Math.random() * 10) + 1;
+  player2Drawn = Math.floor(Math.random() * 10) + 1;
 
   document.getElementById("p1Drawn").innerText = player1Drawn;
   document.getElementById("p2Drawn").innerText = player2Drawn;
 }
 
+function displayEquations() {
+  document.getElementById("p1Equation").innerText = player1Equation;
+  document.getElementById("p2Equation").innerText = player2Equation;
+}
+
 function applyOperation(player) {
-  const operation = document.getElementById(player + "Operation").value;
-  const drawnNumber = player === "player1" ? player1Drawn : player2Drawn;
-  const equation = player === "player1" ? player1Equation : player2Equation;
+  const playerEquation = player === "player1" ? player1Equation : player2Equation;
+  const operation = player === "player1" ? document.getElementById("player1Operation").value : document.getElementById("player2Operation").value;
 
-  equation.left = equation.left.map(term => evaluateOperation(term, operation, drawnNumber));
-  equation.right = equation.right.map(term => evaluateOperation(term, operation, drawnNumber));
+  const result = evaluateEquation(playerEquation, operation);
 
-  equation.left = simplifyEquationSide(equation.left);
-  equation.right = simplifyEquationSide(equation.right);
-
-  document.getElementById(player + "ApplyBtn").classList.remove("applied");
-  document.getElementById(player + "ApplyBtn").classList.add("applied");
-
-  displayEquations();
-  checkSolution();
+  document.getElementById("result").innerText = `${player === "player1" ? player1Name : player2Name}'s Result: ${result}`;
 }
 
-function evaluateOperation(term, operation, number) {
-  if (typeof term === "number") {
-    switch (operation) {
-      case "+": return term + number;
-      case "-": return term - number;
-      case "×": return term * number; // Using × for multiplication
-      case "÷": return Math.floor(term / number); // Using ÷ for division
-    }
-  }
-  return term;
-}
+function evaluateEquation(equation, operation) {
+  // Basic evaluator logic based on the current equation format
+  // This is a simplified version to evaluate equations
+  let leftSide = equation.split(" = ")[0];
+  let rightSide = equation.split(" = ")[1];
 
-function simplifyEquationSide(side) {
-  const terms = side.filter(term => term !== "x");
-  const xTerm = side.includes("x") ? ["x"] : [];
-  const totalSum = terms.reduce((sum, term) => sum + term, 0);
-  return totalSum ? [totalSum, ...xTerm] : xTerm;
-}
-
-function checkSolution() {
-  const p1Solved = player1Equation.left.length === 1 && player1Equation.left.includes("x");
-  const p2Solved = player2Equation.left.length === 1 && player2Equation.left.includes("x");
-
-  if (p1Solved && p2Solved) {
-    document.getElementById("result").innerText = "It's a tie!";
-  } else if (p1Solved) {
-    document.getElementById("result").innerText = `${player1Name} wins!`;
-    window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; // Redirects on Player 1 win
-  } else if (p2Solved) {
-    document.getElementById("result").innerText = `${player2Name} wins!`;
-    window.location.href = "https://music.youtube.com/watch?v=tXEPbotEjZE"; // Redirects on Player 2 win
-  }
+  leftSide = leftSide.replace("x", leftSide.split("x")[0] + " " + operation + " " + leftSide.split("x")[1]);
+  rightSide = rightSide.split(" ").map(Number).reduce((a, b) => a + b);
+  
+  return eval(leftSide);  // Simplified logic for evaluating left side
 }
 
 function nextTurn() {
-  drawNumbers();
-  document.getElementById("player1ApplyBtn").classList.remove("applied");
-  document.getElementById("player2ApplyBtn").classList.remove("applied");
+  player1Equation = generateEquation();
+  player2Equation = generateEquation();
+
   displayEquations();
+  drawNumbers();
+  document.getElementById("result").innerText = "";
 }
